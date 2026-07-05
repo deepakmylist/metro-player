@@ -13,7 +13,7 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-        h1, h2, h3, h4 { text-transform: lowercase; font-weight: 300; }
+        h1, h2, h3, h4 { font-weight: 300; }
         a { text-decoration: none; color: inherit; cursor: pointer; transition: color 0.2s ease; }
         a:hover { color: var(--accent); }
 
@@ -133,8 +133,8 @@
 
     <nav>
         <button id="back-btn" onclick="goBack()" title="Go Back">&#8592;</button>
-        <a id="nav-explore" class="nav-link active" onclick="switchScreen('explore')">explore</a>
-        <a id="nav-search" class="nav-link" onclick="switchScreen('search')">search</a>
+        <a id="nav-explore" class="nav-link active" onclick="switchScreen('explore')">EXPLORE</a>
+        <a id="nav-search" class="nav-link" onclick="switchScreen('search')">SEARCH</a>
         <div class="theme-picker">
             <div class="swatch" style="background: #FF0097;" onclick="setTheme('magenta')"></div>
             <div class="swatch" style="background: #1BA1E2;" onclick="setTheme('cyan')"></div>
@@ -146,26 +146,26 @@
     <div id="screen-container">
         <section id="screen-explore" class="screen active">
             <div class="pano-group">
-                <h2>new releases</h2>
-                <div class="album-grid" id="explore-albums"><p style="color: #444;">loading...</p></div>
+                <h2>NEW RELEASES</h2>
+                <div class="album-grid" id="explore-albums"><p style="color: #444;">Loading...</p></div>
             </div>
             <div class="pano-group" style="min-width: 450px;">
-                <h2>top tracks</h2>
-                <div class="text-list" id="explore-tracks"><p style="color: #444;">loading...</p></div>
+                <h2>TOP TRACKS</h2>
+                <div class="text-list" id="explore-tracks"><p style="color: #444;">Loading...</p></div>
             </div>
             <div class="pano-group">
-                <h2>moods</h2>
+                <h2>MOODS</h2>
                 <div class="mood-grid">
-                    <div class="genre-block tile-magenta" onclick="triggerSearch('Feel good Hindi Punjabi songs')">feel good</div>
-                    <div class="genre-block tile-cyan" onclick="triggerSearch('Romantic Bollywood Punjabi songs')">romance</div>
-                    <div class="genre-block tile-teal" onclick="triggerSearch('Relaxing lo-fi Hindi music')">relax</div>
-                    <div class="genre-block tile-orange" onclick="triggerSearch('Energizing Punjabi hits')">energize</div>
-                    <div class="genre-block tile-red" onclick="triggerSearch('Bollywood Punjabi party dance hits')">party</div>
-                    <div class="genre-block tile-lime" onclick="triggerSearch('Commute driving music Hindi Punjabi')">commute</div>
-                    <div class="genre-block tile-purple" onclick="triggerSearch('Workout gym songs Punjabi')">workout</div>
-                    <div class="genre-block tile-cyan" onclick="triggerSearch('Sad emotional Hindi songs')">sad</div>
-                    <div class="genre-block tile-magenta" onclick="triggerSearch('Focus study instrumental Indian')">focus</div>
-                    <div class="genre-block tile-teal" onclick="triggerSearch('Sleep relaxing music soothing')">sleep</div>
+                    <div class="genre-block tile-magenta" onclick="triggerSearch('Feel good Hindi Punjabi songs')">Feel Good</div>
+                    <div class="genre-block tile-cyan" onclick="triggerSearch('Romantic Bollywood Punjabi songs')">Romance</div>
+                    <div class="genre-block tile-teal" onclick="triggerSearch('Relaxing lo-fi Hindi music')">Relax</div>
+                    <div class="genre-block tile-orange" onclick="triggerSearch('Energizing Punjabi hits')">Energize</div>
+                    <div class="genre-block tile-red" onclick="triggerSearch('Bollywood Punjabi party dance hits')">Party</div>
+                    <div class="genre-block tile-lime" onclick="triggerSearch('Commute driving music Hindi Punjabi')">Commute</div>
+                    <div class="genre-block tile-purple" onclick="triggerSearch('Workout gym songs Punjabi')">Workout</div>
+                    <div class="genre-block tile-cyan" onclick="triggerSearch('Sad emotional Hindi songs')">Sad</div>
+                    <div class="genre-block tile-magenta" onclick="triggerSearch('Focus study instrumental Indian')">Focus</div>
+                    <div class="genre-block tile-teal" onclick="triggerSearch('Sleep relaxing music soothing')">Sleep</div>
                 </div>
             </div>
         </section>
@@ -378,8 +378,8 @@
                     <div class="track-num">${(i+1).toString().padStart(2, '0')}</div>
                     <div class="mini-art" style="background-image: url('${track.artUrl}'); color: ${isCurrent ? 'var(--text-main)' : ''};">${icon}</div>
                     <div class="track-info">
-                        <span class="track-title">${track.name.toLowerCase()}</span>
-                        <span class="track-subtitle">${track.artist.toLowerCase()}</span>
+                        <span class="track-title">${track.name}</span>
+                        <span class="track-subtitle">${track.artist}</span>
                     </div>
                 `;
                 queueContainer.appendChild(el);
@@ -421,7 +421,7 @@
                     return { videoId: t.videoId, name: t.name, artist: artistStr, artUrl: art };
                 }).filter(t => t.videoId); // Ensure valid video ID
 
-                queueContext = title.toLowerCase();
+                queueContext = title;
                 document.getElementById('sidebar-title').textContent = type;
                 playQueueIndex(0);
 
@@ -514,8 +514,8 @@
                 el.innerHTML = `
                     <div class="mini-art" style="background-image: url('${img}'); ${artStyle}">${icon}</div>
                     <div class="track-info">
-                        <span class="track-title">${name.toLowerCase()}</span>
-                        <span class="track-subtitle">${sub.toLowerCase()}</span>
+                        <span class="track-title">${name}</span>
+                        <span class="track-subtitle">${sub}</span>
                     </div>
                 `;
                 container.appendChild(el);
@@ -556,8 +556,8 @@
                             <div class="track-num">${(i+1).toString().padStart(2, '0')}</div>
                             <div class="mini-art" style="background-image: url('${img}')">▶</div>
                             <div class="track-info">
-                                <span class="track-title">${track.name.toLowerCase()}</span>
-                                <span class="track-subtitle">${artist.toLowerCase()}</span>
+                                <span class="track-title">${track.name}</span>
+                                <span class="track-subtitle">${artist}</span>
                             </div>
                         `;
                         tracksContainer.appendChild(el);
