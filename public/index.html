@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro Player</title>
+    <style>
+        /* --- GLOBAL DESIGN LANGUAGE --- */
+        :root { --bg-color: #000000; --text-main: #FFFFFF; --text-muted: #777777; --accent: #FF0097; --font-stack: "Segoe UI", "Helvetica Neue", -apple-system, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-stack); overflow-x: hidden; height: 100vh; display: flex; flex-direction: column; }
+        ::-webkit-scrollbar { height: 8px; width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        h1, h2, h3, h4 { text-transform: lowercase; font-weight: 300; }
+        a { text-decoration: none; color: inherit; cursor: pointer; transition: color 0.2s ease; }
+        a:hover { color: var(--accent); }
+
+        /* --- GLOBAL NAVIGATION --- */
+        nav { padding: 40px 60px 20px 60px; display: flex; gap: 30px; align-items: baseline; flex-shrink: 0; z-index: 10; position: relative; }
+        .nav-link { font-size: 4rem; color: var(--text-muted); letter-spacing: -2px; cursor: pointer;}
+        .nav-link.active { color: var(--text-main); font-weight: 700; }
+        
+        .theme-picker { position: absolute; right: 60px; top: 60px; display: flex; gap: 10px; z-index: 20; }
+        .swatch { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
+        .swatch:hover { transform: scale(1.2); border-color: var(--text-main); }
+
+        /* --- SCREEN CONTAINER --- */
+        #screen-container { flex-grow: 1; position: relative; overflow: hidden; }
+        .screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; padding: 0 60px 100px 60px; animation: fade-in 0.4s ease forwards; overflow-y: auto;}
+        .screen.active { display: block; }
+        @keyframes fade-in { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* --- REUSABLE UI ELEMENTS --- */
+        .text-list { display: flex; flex-direction: column; gap: 15px; }
+        .track-item { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: background-color 0.2s; padding: 5px; border-radius: 4px; }
+        .track-item:hover { background-color: rgba(255,255,255,0.05); }
+        .track-item:hover .track-title { color: var(--accent); }
+        .mini-art { width: 45px; height: 45px; background-color: #222; flex-shrink: 0; display: flex; justify-content: center; align-items: center; background-size: cover; font-size: 1rem; color: transparent; transition: background-color 0.2s; }
+        .track-item:hover .mini-art { color: var(--text-main); }
+        .track-info { display: flex; flex-direction: column; justify-content: center; flex-grow: 1; min-width: 0; }
+        .track-title { font-size: 1.2rem; transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .track-subtitle { font-size: 0.9rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* --- SCREEN: SEARCH --- */
+        .search-container { width: 100%; max-width: 1400px; margin-top: 20px;}
+        .search-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid var(--accent); color: var(--text-main); font-size: 4rem; font-family: var(--font-stack); font-weight: 300; padding-bottom: 10px; margin-bottom: 40px; outline: none; transition: border-color 0.3s ease; }
+        .search-input::placeholder { color: #333; }
+        .search-col h3 { color: var(--text-muted); font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #222;}
+        #loader { display: none; color: var(--accent); font-size: 1.5rem; margin-bottom: 20px;}
+
+        /* --- MINI PLAYER --- */
+        .mini-player { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background-color: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; z-index: 100; border-top: 1px solid #222; }
+        .mp-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 0;}
+        .mp-art { width: 50px; height: 50px; background-color: var(--accent); background-size: cover; background-position: center; flex-shrink: 0;}
+        .mp-info { display: flex; flex-direction: column; overflow: hidden; white-space: nowrap; }
+        .mp-title { font-size: 1.2rem; font-weight: bold; text-overflow: ellipsis; overflow: hidden;}
+        .mp-artist { font-size: 0.9rem; color: var(--text-muted); text-overflow: ellipsis; overflow: hidden;}
+        .mp-controls { display: flex; align-items: center; gap: 25px; flex-shrink: 0;}
+        .mp-btn { background: transparent; border: none; color: var(--text-main); font-size: 2rem; cursor: pointer; transition: color 0.2s;}
+        .mp-btn:hover { color: var(--accent); }
+
+        /* Mobile Adjustments */
+        @media screen and (max-width: 900px) {
+            nav { padding: 20px 20px 10px 20px; gap: 15px; }
+            .nav-link { font-size: 2.5rem; }
+            .theme-picker { top: 25px; right: 20px; }
+            .screen { padding: 0 20px 100px 20px; }
+            .search-input { font-size: 2.5rem; }
+            .mini-player { padding: 0 15px; height: 70px; }
+            .mp-btn { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="yt-player-container" style="position: absolute; top: -9999px; left: -9999px;"></div>
+
+    <script>
+        const themes = { magenta: '#FF0097', cyan: '#1BA1E2', lime: '#8CBF26', orange: '#F3A000' };
+        function setTheme(themeKey) {
+            if (themes[themeKey]) {
+                document.documentElement.style.setProperty('--accent', themes[themeKey]);
+                localStorage.setItem('metro-player-theme', themeKey);
+            }
+        }
+        setTheme(localStorage.getItem('metro-player-theme') || 'magenta');
+    </script>
+
+    <nav>
+        <a id="nav-search" class="nav-link active">search youtube music</a>
+        <div class="theme-picker">
+            <div class="swatch" style="background: #FF0097;" onclick="setTheme('magenta')"></div>
+            <div class="swatch" style="background: #1BA1E2;" onclick="setTheme('cyan')"></div>
+            <div class="swatch" style="background: #8CBF26;" onclick="setTheme('lime')"></div>
+            <div class="swatch" style="background: #F3A000;" onclick="setTheme('orange')"></div>
+        </div>
+    </nav>
+
+    <div id="screen-container">
+        <section id="screen-search" class="screen active">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="type a song or artist and press enter..." autofocus>
+                <div id="loader">searching youtube music...</div>
+                
+                <div class="search-col" id="results-container" style="display: none;">
+                    <h3>top results (click to play full song)</h3>
+                    <div class="text-list" id="track-list">
+                        </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="mini-player">
+        <div class="mp-left">
+            <div class="mp-art" id="mp-art"></div>
+            <div class="mp-info">
+                <span class="mp-title" id="mp-title">ready to play</span>
+                <span class="mp-artist" id="mp-artist">search for music above</span>
+            </div>
+        </div>
+        <div class="mp-controls">
+            <button class="mp-btn" id="play-pause-btn" onclick="togglePlay()">▶</button>
+        </div>
+    </div>
+
+    <script>
+        // --- YOUTUBE AUDIO ENGINE ---
+        let ytPlayer;
+        let isPlaying = false;
+        let isPlayerReady = false;
+
+        const playBtn = document.getElementById('play-pause-btn');
+        const mpArt = document.getElementById('mp-art');
+        const mpTitle = document.getElementById('mp-title');
+        const mpArtist = document.getElementById('mp-artist');
+
+        // Load the IFrame Player API code asynchronously
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player-container', {
+                height: '0', width: '0',
+                events: {
+                    'onReady': () => { isPlayerReady = true; },
+                    'onStateChange': (event) => {
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            isPlaying = true;
+                            playBtn.textContent = '⏸';
+                        } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                            isPlaying = false;
+                            playBtn.textContent = '▶';
+                        }
+                    }
+                }
+            });
+        }
+
+        function playTrack(videoId, trackName, artistName, artUrl) {
+            if (!isPlayerReady) return alert("Audio player is still initializing. Please wait a second.");
+            
+            // Set UI
+            mpTitle.textContent = trackName;
+            mpArtist.textContent = artistName;
+            mpArt.style.backgroundImage = `url(${artUrl})`;
+            
+            // Stream audio via YouTube
+            ytPlayer.loadVideoById(videoId);
+        }
+
+        function togglePlay() {
+            if (!isPlayerReady) return;
+            if (isPlaying) {
+                ytPlayer.pauseVideo();
+            } else {
+                ytPlayer.playVideo();
+            }
+        }
+
+        // --- BACKEND SEARCH ENGINE ---
+        const searchInput = document.getElementById('searchInput');
+        const trackList = document.getElementById('track-list');
+        const loader = document.getElementById('loader');
+        const resultsContainer = document.getElementById('results-container');
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) { fetchMusic(query); }
+            }
+        });
+
+        async function fetchMusic(query) {
+            loader.style.display = 'block';
+            resultsContainer.style.display = 'none';
+            trackList.innerHTML = ''; 
+
+            try {
+                // Hitting your Node.js backend
+                const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                const songs = await response.json();
+                renderResults(songs);
+            } catch (error) {
+                trackList.innerHTML = `<p style="color: red;">Error: Could not reach backend.</p>`;
+            } finally {
+                loader.style.display = 'none';
+                resultsContainer.style.display = 'block';
+            }
+        }
+
+        function renderResults(songs) {
+            if (!songs || songs.error || songs.length === 0) {
+                trackList.innerHTML = `<p>no results found.</p>`;
+                return;
+            }
+
+            // Cap at 15 items for layout
+            songs.slice(0, 15).forEach(song => {
+                // Get the best thumbnail (last one in the array usually has highest res)
+                const highResArt = song.thumbnails && song.thumbnails.length > 0 
+                    ? song.thumbnails[song.thumbnails.length - 1].url 
+                    : '';
+                const artistName = song.artist ? song.artist.name : 'Unknown Artist';
+
+                const trackEl = document.createElement('div');
+                trackEl.className = 'track-item';
+                
+                trackEl.onclick = () => playTrack(song.videoId, song.name, artistName, highResArt);
+
+                trackEl.innerHTML = `
+                    <div class="mini-art" style="background-image: url('${highResArt}')">▶</div>
+                    <div class="track-info">
+                        <span class="track-title">${song.name.toLowerCase()}</span>
+                        <span class="track-subtitle">${artistName.toLowerCase()}</span>
+                    </div>
+                `;
+                trackList.appendChild(trackEl);
+            });
+        }
+    </script>
+</body>
+</html>
