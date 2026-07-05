@@ -38,6 +38,8 @@
         .track-item { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: background-color 0.2s; padding: 5px; border-radius: 4px; }
         .track-item:hover { background-color: rgba(255,255,255,0.05); }
         .track-item:hover .track-title { color: var(--accent); }
+        .track-item.playing { background-color: rgba(255,255,255,0.1); border-left: 3px solid var(--accent); padding-left: 12px;}
+        .track-item.playing .track-title { color: var(--accent); font-weight: bold; }
         .mini-art { width: 45px; height: 45px; background-color: #222; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 1rem; color: #444; transition: background-color 0.2s; background-size: cover; background-position: center;}
         .track-item:hover .mini-art { color: var(--text-main); }
         .track-info { display: flex; flex-direction: column; justify-content: center; flex-grow: 1; min-width: 0; }
@@ -53,35 +55,12 @@
         .album-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .album-art-square { width: 150px; height: 150px; background-color: #222; display: flex; justify-content: center; align-items: center; font-size: 3rem; color: transparent; transition: transform 0.2s, background-color 0.2s; cursor: pointer; background-size: cover; background-position: center;}
         .album-art-square:hover { transform: scale(1.05); color: var(--text-main); background-color: rgba(0,0,0,0.5); background-blend-mode: overlay; }
-        /* --- MOOD & GENRE GRID (METRO TILES) --- */
-        .mood-grid { 
-            display: grid; 
-            grid-template-columns: repeat(5, 150px); 
-            grid-template-rows: repeat(2, 150px); 
-            gap: 15px; 
-        }
-        .genre-block { 
-            width: 100%; height: 100%; 
-            padding: 15px; 
-            display: flex; align-items: flex-end; 
-            font-size: 1.5rem; font-weight: 300; color: var(--text-main);
-            cursor: pointer; transition: transform 0.2s, opacity 0.2s; 
-        }
+        
+        /* Mood Grid */
+        .mood-grid { display: grid; grid-template-columns: repeat(5, 150px); grid-template-rows: repeat(2, 150px); gap: 15px; }
+        .genre-block { width: 100%; height: 100%; padding: 15px; display: flex; align-items: flex-end; font-size: 1.5rem; font-weight: 300; color: var(--text-main); cursor: pointer; transition: transform 0.2s, opacity 0.2s; }
         .genre-block:hover { transform: scale(1.05); opacity: 0.9; }
-        
-        /* Specific Tile Colors */
-        .tile-magenta { background-color: #FF0097; }
-        .tile-cyan { background-color: #1BA1E2; }
-        .tile-lime { background-color: #8CBF26; }
-        .tile-orange { background-color: #F3A000; }
-        .tile-purple { background-color: #A200FF; }
-        .tile-red { background-color: #E51400; }
-        .tile-teal { background-color: #00ABA9; }
-        
-        /* Mobile adjustment for the grid */
-        @media screen and (max-width: 900px) {
-            .mood-grid { grid-template-columns: repeat(5, 120px); grid-template-rows: repeat(2, 120px); }
-        }
+        .tile-magenta { background-color: #FF0097; } .tile-cyan { background-color: #1BA1E2; } .tile-lime { background-color: #8CBF26; } .tile-orange { background-color: #F3A000; } .tile-purple { background-color: #A200FF; } .tile-red { background-color: #E51400; } .tile-teal { background-color: #00ABA9; }
 
         /* --- SCREEN 2: SEARCH --- */
         .search-container { width: 100%; max-width: 1400px; }
@@ -111,6 +90,9 @@
         .btn-skip:hover { color: var(--accent); }
         .btn-play-large { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--text-main); background: transparent; color: var(--text-main); font-size: 2rem; cursor: pointer; transition: all 0.2s; }
         .btn-play-large:hover { background: var(--text-main); color: var(--bg-color); }
+        .np-sidebar { width: 400px; background: rgba(10, 10, 10, 0.7); border-left: 1px solid #222; display: flex; flex-direction: column; padding: 40px 30px 120px 30px; }
+        .np-sidebar h3 { font-size: 2rem; color: var(--text-main); margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .np-queue { flex: 1; overflow-y: auto; padding-right: 10px; }
 
         /* --- MINI PLAYER (GLOBAL) --- */
         .mini-player { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background-color: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; z-index: 100; border-top: 1px solid #222; }
@@ -124,29 +106,12 @@
         .mp-btn { background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;}
         .mp-btn:hover { color: var(--accent); }
 
-        /* Mobile */
         @media screen and (max-width: 900px) {
-            nav { padding: 20px 20px 10px 20px; gap: 15px; }
-            .nav-link { font-size: 2.5rem; }
-            #back-btn { font-size: 2.5rem; padding-right: 5px;}
-            .theme-picker { top: 25px; right: 20px; }
-            .screen { padding: 0 20px 100px 20px; }
-            #screen-explore.active { gap: 40px; }
-            .pano-group { min-width: 85vw; }
-            .pano-group[style*="min-width: 450px"] { min-width: 85vw !important; }
-            .search-input { font-size: 2rem; padding-bottom: 5px; }
-            .clear-btn { font-size: 2rem; bottom: 10px;}
-            .search-results { grid-template-columns: 1fr; gap: 30px; }
-            #screen-now-playing { flex-direction: column; overflow-y: auto; }
-            .np-main { padding: 40px 20px 20px 20px; }
-            .np-layout { flex-direction: column; text-align: center; gap: 30px; margin-bottom: 30px; }
-            .np-album-art { width: 250px; height: 250px; }
-            .np-info h1 { font-size: 2.5rem; }
-            .np-info h2 { font-size: 1.5rem; }
-            .np-info h3 { font-size: 1rem; }
-            .np-controls { width: 100%; }
-            .mini-player { padding: 0 15px; height: 70px; }
-            .mp-art { width: 40px; height: 40px; }
+            nav { padding: 20px 20px 10px 20px; gap: 15px; } .nav-link { font-size: 2.5rem; } #back-btn { font-size: 2.5rem; padding-right: 5px;} .theme-picker { top: 25px; right: 20px; } .screen { padding: 0 20px 100px 20px; }
+            #screen-explore.active { gap: 40px; } .pano-group { min-width: 85vw; } .album-art-square { width: 100%; height: 40vw; } 
+            .mood-grid { grid-template-columns: repeat(5, 120px); grid-template-rows: repeat(2, 120px); }
+            .search-input { font-size: 2rem; padding-bottom: 5px; } .clear-btn { font-size: 2rem; bottom: 10px;} .search-results { grid-template-columns: 1fr; gap: 30px; }
+            #screen-now-playing { flex-direction: column; overflow-y: auto; } .np-main { padding: 40px 20px 20px 20px; } .np-layout { flex-direction: column; text-align: center; gap: 30px; margin-bottom: 30px; } .np-album-art { width: 250px; height: 250px; } .np-info h1 { font-size: 2.5rem; } .np-info h2 { font-size: 1.5rem; } .np-info h3 { font-size: 1rem; } .np-controls { width: 100%; } .np-sidebar { width: 100%; border-left: none; border-top: 1px solid #222; padding: 30px 20px 120px 20px; background: transparent; } .mini-player { padding: 0 15px; height: 70px; } .mp-art { width: 40px; height: 40px; }
         }
     </style>
 </head>
@@ -180,7 +145,15 @@
 
     <div id="screen-container">
         <section id="screen-explore" class="screen active">
-           <div class="pano-group">
+            <div class="pano-group">
+                <h2>new releases</h2>
+                <div class="album-grid" id="explore-albums"><p style="color: #444;">loading...</p></div>
+            </div>
+            <div class="pano-group" style="min-width: 450px;">
+                <h2>top tracks</h2>
+                <div class="text-list" id="explore-tracks"><p style="color: #444;">loading...</p></div>
+            </div>
+            <div class="pano-group">
                 <h2>moods</h2>
                 <div class="mood-grid">
                     <div class="genre-block tile-magenta" onclick="triggerSearch('Feel good Hindi Punjabi songs')">feel good</div>
@@ -188,7 +161,6 @@
                     <div class="genre-block tile-teal" onclick="triggerSearch('Relaxing lo-fi Hindi music')">relax</div>
                     <div class="genre-block tile-orange" onclick="triggerSearch('Energizing Punjabi hits')">energize</div>
                     <div class="genre-block tile-red" onclick="triggerSearch('Bollywood Punjabi party dance hits')">party</div>
-                    
                     <div class="genre-block tile-lime" onclick="triggerSearch('Commute driving music Hindi Punjabi')">commute</div>
                     <div class="genre-block tile-purple" onclick="triggerSearch('Workout gym songs Punjabi')">workout</div>
                     <div class="genre-block tile-cyan" onclick="triggerSearch('Sad emotional Hindi songs')">sad</div>
@@ -201,7 +173,7 @@
         <section id="screen-search" class="screen">
             <div class="search-container">
                 <div class="input-wrapper">
-                    <input type="text" id="searchInput" class="search-input" placeholder="type an artist, album, song..." autocomplete="off">
+                    <input type="text" id="searchInput" class="search-input" placeholder="search..." autocomplete="off">
                     <button class="clear-btn" id="clearBtn">×</button>
                 </div>
                 <div id="loader" style="display: none; color: var(--accent); font-size: 1.5rem; margin-bottom: 20px;">searching...</div>
@@ -229,7 +201,7 @@
                     <div class="np-info">
                         <h1 id="np-title">ready to play</h1>
                         <h2 id="np-artist">select a track</h2>
-                        <h3>youtube music</h3>
+                        <h3 id="np-context">youtube music</h3>
                     </div>
                 </div>
                 <div class="np-controls">
@@ -239,10 +211,17 @@
                         <span id="np-time-total">0:00</span>
                     </div>
                     <div class="control-buttons">
-                        <button class="btn-skip">⏮</button>
+                        <button class="btn-skip" onclick="playPrevious()">⏮</button>
                         <button class="btn-play-large" id="np-play-btn" onclick="togglePlay()">▶</button>
-                        <button class="btn-skip">⏭</button>
+                        <button class="btn-skip" onclick="playNext()">⏭</button>
                     </div>
+                </div>
+            </div>
+            
+            <div class="np-sidebar">
+                <h3 id="sidebar-title">up next</h3>
+                <div class="np-queue text-list" id="np-queue">
+                    <p style="color: #555;">Queue is empty.</p>
                 </div>
             </div>
         </section>
@@ -257,9 +236,9 @@
             </div>
         </div>
         <div class="mp-controls">
-            <button class="mp-btn">⏮</button>
+            <button class="mp-btn" onclick="playPrevious()">⏮</button>
             <button class="mp-btn" id="mp-play-btn" onclick="togglePlay()">▶</button>
-            <button class="mp-btn">⏭</button>
+            <button class="mp-btn" onclick="playNext()">⏭</button>
         </div>
     </div>
 
@@ -268,9 +247,7 @@
         let navHistory = ['explore'];
 
         function switchScreen(screenId, isBackAction = false) {
-            if (!isBackAction) {
-                if (navHistory[navHistory.length - 1] !== screenId) navHistory.push(screenId);
-            }
+            if (!isBackAction && navHistory[navHistory.length - 1] !== screenId) navHistory.push(screenId);
             document.getElementById('back-btn').style.display = navHistory.length > 1 ? 'inline-block' : 'none';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + screenId).classList.add('active');
@@ -290,6 +267,11 @@
         exploreScreen.addEventListener('wheel', (evt) => {
             if (window.innerWidth > 900) { evt.preventDefault(); exploreScreen.scrollLeft += evt.deltaY; }
         });
+
+        // --- GLOBAL QUEUE SYSTEM ---
+        let currentQueue = [];
+        let currentQueueIndex = 0;
+        let queueContext = "youtube music";
 
         // --- AUDIO ENGINE ---
         let ytPlayer;
@@ -318,10 +300,14 @@
                 isPlaying = true;
                 btns.forEach(b => b.textContent = '⏸');
                 startProgressBar();
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+            } else if (event.data === YT.PlayerState.PAUSED) {
                 isPlaying = false;
                 btns.forEach(b => b.textContent = '▶');
                 stopProgressBar();
+            } else if (event.data === YT.PlayerState.ENDED) {
+                isPlaying = false;
+                stopProgressBar();
+                playNext(); // Auto play next in queue
             }
         }
 
@@ -343,24 +329,108 @@
         function stopProgressBar() { if (progressInterval) clearInterval(progressInterval); }
         function formatTime(s) { const m = Math.floor(s/60); return `${m}:${Math.floor(s%60).toString().padStart(2, '0')}`; }
 
-        function playTrack(videoId, trackName, artistName, artUrl) {
-            if (!isPlayerReady) return alert("Initializing audio...");
+        // --- QUEUE MANAGEMENT ---
+        function playQueueIndex(index) {
+            if (!isPlayerReady || index < 0 || index >= currentQueue.length) return;
             
+            currentQueueIndex = index;
+            const track = currentQueue[index];
+            
+            // Sync UI
             ['mp', 'np'].forEach(prefix => {
-                document.getElementById(`${prefix}-title`).textContent = trackName;
-                document.getElementById(`${prefix}-artist`).textContent = artistName;
-                document.getElementById(`${prefix}-art`).style.backgroundImage = `url('${artUrl}')`;
+                document.getElementById(`${prefix}-title`).textContent = track.name;
+                document.getElementById(`${prefix}-artist`).textContent = track.artist;
+                document.getElementById(`${prefix}-art`).style.backgroundImage = `url('${track.artUrl}')`;
             });
-            
+            document.getElementById('np-context').textContent = queueContext;
             document.getElementById('np-progress-bar').style.width = '0%';
+            
+            renderQueueUI();
             switchScreen('now-playing');
-            ytPlayer.loadVideoById(videoId);
+            ytPlayer.loadVideoById(track.videoId);
+        }
+
+        function playNext() {
+            if (currentQueueIndex + 1 < currentQueue.length) playQueueIndex(currentQueueIndex + 1);
+        }
+        
+        function playPrevious() {
+            if (currentQueueIndex - 1 >= 0) playQueueIndex(currentQueueIndex - 1);
         }
 
         function togglePlay() {
             if (!isPlayerReady) return;
             isPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
         }
+
+        function renderQueueUI() {
+            const queueContainer = document.getElementById('np-queue');
+            queueContainer.innerHTML = '';
+            
+            currentQueue.forEach((track, i) => {
+                const isCurrent = i === currentQueueIndex;
+                const el = document.createElement('div');
+                el.className = `track-item ${isCurrent ? 'playing' : ''}`;
+                el.onclick = () => playQueueIndex(i);
+                
+                const icon = isCurrent ? '⏸' : '▶';
+                el.innerHTML = `
+                    <div class="track-num">${(i+1).toString().padStart(2, '0')}</div>
+                    <div class="mini-art" style="background-image: url('${track.artUrl}'); color: ${isCurrent ? 'var(--text-main)' : ''};">${icon}</div>
+                    <div class="track-info">
+                        <span class="track-title">${track.name.toLowerCase()}</span>
+                        <span class="track-subtitle">${track.artist.toLowerCase()}</span>
+                    </div>
+                `;
+                queueContainer.appendChild(el);
+            });
+        }
+
+        // Creates a simple queue of 1 song if user clicks a single track from explore/search
+        function playSingleTrack(videoId, trackName, artistName, artUrl) {
+            currentQueue = [{ videoId, name: trackName, artist: artistName, artUrl }];
+            queueContext = "playing track";
+            document.getElementById('sidebar-title').textContent = "up next";
+            playQueueIndex(0);
+        }
+
+        // --- FETCHING COLLECTIONS (ALBUMS, PLAYLISTS, ARTISTS) ---
+        async function playCollection(type, id, title) {
+            if (!id) return;
+            switchScreen('now-playing');
+            document.getElementById('sidebar-title').textContent = `loading ${type}...`;
+            
+            try {
+                const response = await fetch(`/api/${type}?id=${encodeURIComponent(id)}`);
+                const data = await response.json();
+                
+                let tracks = [];
+                // API structures vary slightly between endpoints, handle them dynamically
+                if (type === 'album' || type === 'playlist') {
+                    tracks = data.songs || data.tracks || [];
+                } else if (type === 'artist') {
+                    tracks = data.topSongs || data.songs || [];
+                }
+
+                if (tracks.length === 0) throw new Error("No tracks found");
+
+                // Map raw API data to our standard Queue object
+                currentQueue = tracks.map(t => {
+                    const art = (t.thumbnails && t.thumbnails.length > 0) ? t.thumbnails[t.thumbnails.length - 1].url : '';
+                    const artistStr = t.artists ? t.artists.map(a => a.name).join(', ') : (data.name || 'Unknown');
+                    return { videoId: t.videoId, name: t.name, artist: artistStr, artUrl: art };
+                }).filter(t => t.videoId); // Ensure valid video ID
+
+                queueContext = title.toLowerCase();
+                document.getElementById('sidebar-title').textContent = type;
+                playQueueIndex(0);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('sidebar-title').textContent = "failed to load.";
+            }
+        }
+
 
         // --- SEARCH ENGINE ---
         const searchInput = document.getElementById('searchInput');
@@ -374,10 +444,8 @@
             if (query.length > 0) {
                 clearBtn.style.display = 'block';
                 clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => fetchSearch(query), 600); // 600ms Live Search
-            } else {
-                clearSearchUI();
-            }
+                debounceTimer = setTimeout(() => fetchSearch(query), 600);
+            } else clearSearchUI();
         });
 
         clearBtn.addEventListener('click', clearSearchUI);
@@ -400,33 +468,24 @@
             staticPlaceholders.style.display = 'none';
             dynamicResults.style.display = 'none';
             
-            // Clear current columns
             ['res-artists', 'res-albums', 'res-tracks', 'res-playlists'].forEach(id => document.getElementById(id).innerHTML = '');
 
             try {
                 const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
                 const results = await response.json();
                 
-                // Categorize
-                const tracks = results.filter(r => r.type === 'SONG' || r.type === 'VIDEO').slice(0, 7);
-                const artists = results.filter(r => r.type === 'ARTIST').slice(0, 5);
-                const albums = results.filter(r => r.type === 'ALBUM').slice(0, 5);
-                const playlists = results.filter(r => r.type === 'PLAYLIST').slice(0, 5);
-
-                populateColumn('res-tracks', tracks, true);
-                populateColumn('res-artists', artists, false);
-                populateColumn('res-albums', albums, false);
-                populateColumn('res-playlists', playlists, false);
-
-            } catch (error) {
-                console.error("Search failed", error);
-            } finally {
+                populateColumn('res-tracks', results.filter(r => r.type === 'SONG' || r.type === 'VIDEO').slice(0, 7), 'song');
+                populateColumn('res-artists', results.filter(r => r.type === 'ARTIST').slice(0, 5), 'artist');
+                populateColumn('res-albums', results.filter(r => r.type === 'ALBUM').slice(0, 5), 'album');
+                populateColumn('res-playlists', results.filter(r => r.type === 'PLAYLIST').slice(0, 5), 'playlist');
+            } catch (error) { console.error(error); } 
+            finally {
                 document.getElementById('loader').style.display = 'none';
                 dynamicResults.style.display = 'grid';
             }
         }
 
-        function populateColumn(containerId, items, isPlayable) {
+        function populateColumn(containerId, items, type) {
             const container = document.getElementById(containerId);
             if (items.length === 0) { container.innerHTML = '<p style="color:#444;">no results.</p>'; return; }
 
@@ -438,15 +497,19 @@
                 const el = document.createElement('div');
                 el.className = 'track-item';
                 
-                // If it's a track, clicking plays it. Otherwise, clicking triggers a new search for that item.
-                if (isPlayable && item.videoId) {
-                    el.onclick = () => playTrack(item.videoId, name, sub, img);
-                } else {
-                    el.onclick = () => triggerSearch(name);
+                // Route Click Behavior
+                if (type === 'song') {
+                    el.onclick = () => playSingleTrack(item.videoId, name, sub, img);
+                } else if (type === 'album') {
+                    el.onclick = () => playCollection('album', item.albumId || item.browseId, name);
+                } else if (type === 'playlist') {
+                    el.onclick = () => playCollection('playlist', item.playlistId || item.browseId, name);
+                } else if (type === 'artist') {
+                    el.onclick = () => playCollection('artist', item.artistId || item.browseId, name);
                 }
 
-                const icon = isPlayable ? '▶' : '';
-                const artStyle = item.type === 'ARTIST' ? 'border-radius: 50%;' : '';
+                const icon = type === 'song' ? '▶' : '';
+                const artStyle = type === 'artist' ? 'border-radius: 50%;' : '';
 
                 el.innerHTML = `
                     <div class="mini-art" style="background-image: url('${img}'); ${artStyle}">${icon}</div>
@@ -470,7 +533,6 @@
                 albumContainer.innerHTML = '';
                 tracksContainer.innerHTML = '';
 
-                // Populate Albums
                 if (data.newAlbums) {
                     data.newAlbums.forEach(album => {
                         const img = album.thumbnails ? album.thumbnails[album.thumbnails.length - 1].url : '';
@@ -478,19 +540,18 @@
                         el.className = 'album-art-square';
                         el.style.backgroundImage = `url('${img}')`;
                         el.innerHTML = '▶';
-                        el.onclick = () => triggerSearch(album.name);
+                        el.onclick = () => playCollection('album', album.albumId || album.browseId, album.name);
                         albumContainer.appendChild(el);
                     });
                 }
 
-                // Populate Tracks
                 if (data.topTracks) {
                     data.topTracks.forEach((track, i) => {
                         const img = track.thumbnails ? track.thumbnails[track.thumbnails.length - 1].url : '';
                         const artist = track.artist ? track.artist.name : 'Unknown';
                         const el = document.createElement('div');
                         el.className = 'track-item';
-                        el.onclick = () => playTrack(track.videoId, track.name, artist, img);
+                        el.onclick = () => playSingleTrack(track.videoId, track.name, artist, img);
                         el.innerHTML = `
                             <div class="track-num">${(i+1).toString().padStart(2, '0')}</div>
                             <div class="mini-art" style="background-image: url('${img}')">▶</div>
@@ -502,9 +563,7 @@
                         tracksContainer.appendChild(el);
                     });
                 }
-            } catch (err) {
-                console.error("Failed to load Explore data.");
-            }
+            } catch (err) { console.error("Failed to load Explore data."); }
         }
     </script>
 </body>
