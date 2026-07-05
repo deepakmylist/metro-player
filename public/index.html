@@ -53,10 +53,35 @@
         .album-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .album-art-square { width: 150px; height: 150px; background-color: #222; display: flex; justify-content: center; align-items: center; font-size: 3rem; color: transparent; transition: transform 0.2s, background-color 0.2s; cursor: pointer; background-size: cover; background-position: center;}
         .album-art-square:hover { transform: scale(1.05); color: var(--text-main); background-color: rgba(0,0,0,0.5); background-blend-mode: overlay; }
-        .genre-block { width: 315px; height: 150px; background-color: var(--accent); padding: 20px; display: flex; align-items: flex-end; font-size: 2rem; font-weight: 300; cursor: pointer; transition: opacity 0.2s; }
-        .genre-block:hover { opacity: 0.8; }
-        .genre-block.blue { background-color: #1BA1E2; }
-        .genre-block.lime { background-color: #8CBF26; }
+        /* --- MOOD & GENRE GRID (METRO TILES) --- */
+        .mood-grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 150px); 
+            grid-template-rows: repeat(2, 150px); 
+            gap: 15px; 
+        }
+        .genre-block { 
+            width: 100%; height: 100%; 
+            padding: 15px; 
+            display: flex; align-items: flex-end; 
+            font-size: 1.5rem; font-weight: 300; color: var(--text-main);
+            cursor: pointer; transition: transform 0.2s, opacity 0.2s; 
+        }
+        .genre-block:hover { transform: scale(1.05); opacity: 0.9; }
+        
+        /* Specific Tile Colors */
+        .tile-magenta { background-color: #FF0097; }
+        .tile-cyan { background-color: #1BA1E2; }
+        .tile-lime { background-color: #8CBF26; }
+        .tile-orange { background-color: #F3A000; }
+        .tile-purple { background-color: #A200FF; }
+        .tile-red { background-color: #E51400; }
+        .tile-teal { background-color: #00ABA9; }
+        
+        /* Mobile adjustment for the grid */
+        @media screen and (max-width: 900px) {
+            .mood-grid { grid-template-columns: repeat(5, 120px); grid-template-rows: repeat(2, 120px); }
+        }
 
         /* --- SCREEN 2: SEARCH --- */
         .search-container { width: 100%; max-width: 1400px; }
@@ -155,23 +180,21 @@
 
     <div id="screen-container">
         <section id="screen-explore" class="screen active">
-            <div class="pano-group">
-                <h2>new releases</h2>
-                <div class="album-grid" id="explore-albums">
-                    <p style="color: #444;">loading...</p>
+           <div class="pano-group">
+                <h2>moods</h2>
+                <div class="mood-grid">
+                    <div class="genre-block tile-magenta" onclick="triggerSearch('Feel good Hindi Punjabi songs')">feel good</div>
+                    <div class="genre-block tile-cyan" onclick="triggerSearch('Romantic Bollywood Punjabi songs')">romance</div>
+                    <div class="genre-block tile-teal" onclick="triggerSearch('Relaxing lo-fi Hindi music')">relax</div>
+                    <div class="genre-block tile-orange" onclick="triggerSearch('Energizing Punjabi hits')">energize</div>
+                    <div class="genre-block tile-red" onclick="triggerSearch('Bollywood Punjabi party dance hits')">party</div>
+                    
+                    <div class="genre-block tile-lime" onclick="triggerSearch('Commute driving music Hindi Punjabi')">commute</div>
+                    <div class="genre-block tile-purple" onclick="triggerSearch('Workout gym songs Punjabi')">workout</div>
+                    <div class="genre-block tile-cyan" onclick="triggerSearch('Sad emotional Hindi songs')">sad</div>
+                    <div class="genre-block tile-magenta" onclick="triggerSearch('Focus study instrumental Indian')">focus</div>
+                    <div class="genre-block tile-teal" onclick="triggerSearch('Sleep relaxing music soothing')">sleep</div>
                 </div>
-            </div>
-            <div class="pano-group" style="min-width: 450px;">
-                <h2>top tracks</h2>
-                <div class="text-list" id="explore-tracks">
-                    <p style="color: #444;">loading...</p>
-                </div>
-            </div>
-            <div class="pano-group">
-                <h2>genres</h2>
-                <div class="genre-block" onclick="triggerSearch('electronic')">electronic</div>
-                <div class="genre-block blue" onclick="triggerSearch('indie rock')">indie rock</div>
-                <div class="genre-block lime" onclick="triggerSearch('hip hop')">hip hop</div>
             </div>
         </section>
 

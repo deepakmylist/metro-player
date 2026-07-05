@@ -16,20 +16,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 const ytmusic = new YTMusic();
 let isReady = false;
 
-// Initialize YouTube Music API
 ytmusic.initialize().then(() => {
     isReady = true;
     console.log('YouTube Music API initialized successfully.');
 }).catch(err => console.error('Failed to init YTMusic:', err));
 
-// --- ENDPOINT 1: MIXED SEARCH ---
 app.get('/api/search', async (req, res) => {
     if (!isReady) return res.status(503).json({ error: 'API is warming up.' });
     const query = req.query.q;
     if (!query) return res.status(400).json({ error: 'No query provided.' });
 
     try {
-        // .search() returns a mixed array of Songs, Albums, Artists, and Playlists
         const results = await ytmusic.search(query);
         res.json(results);
     } catch (error) {
@@ -38,15 +35,15 @@ app.get('/api/search', async (req, res) => {
     }
 });
 
-// --- ENDPOINT 2: EXPLORE DATA ---
+// --- UPDATED EXPLORE ENDPOINT (Localized to India/Hindi/Punjabi) ---
 app.get('/api/explore', async (req, res) => {
     if (!isReady) return res.status(503).json({ error: 'API is warming up.' });
     
     try {
-        // Fetching generic chart queries to populate the Explore tab
+        // Fetching targeted queries to populate the Explore tab with localized content
         const [topTracks, newAlbums] = await Promise.all([
-            ytmusic.searchSongs("Global Top Songs"),
-            ytmusic.searchAlbums("New Releases")
+            ytmusic.searchSongs("Top Hindi and Punjabi hit songs"), 
+            ytmusic.searchAlbums("Latest Hindi Punjabi albums")
         ]);
         
         res.json({
