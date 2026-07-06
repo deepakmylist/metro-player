@@ -1,3 +1,4 @@
+
 # 🎵 Metro Player
 
 [![Render](https://img.shields.io/badge/Hosted_on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
@@ -10,7 +11,7 @@
 
 ## 🚀 Live Demo
 
-**[Experience Metro Player Live on Render]({https://metro-player.onrender.com/})**
+**[Experience Metro Player Live on Render](https://metro-player.onrender.com/)**
 
 ---
 
