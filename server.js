@@ -58,6 +58,19 @@ app.get('/api/explore', async (req, res) => {
 app.get('/api/album', async (req, res) => {
     const albumId = req.query.id;
     const name = req.query.name || '';
+    
+    if (albumId && albumId.startsWith('RDCLAK')) {
+        try {
+            const vlId = 'VL' + albumId;
+            const songs = await withRetry(() => ytmusic.getPlaylistVideos(vlId));
+            if (songs && songs.length > 0) {
+                return res.json({ name: name || 'Album', songs: songs });
+            }
+        } catch (err) {
+            console.log(`Album RDCLAK tried as playlist failed for ID ${albumId}:`, err.message);
+        }
+    }
+
     try { 
         res.json(await ytmusic.getAlbum(albumId)); 
     } 
