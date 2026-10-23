@@ -3,6 +3,7 @@
 
 [![Render](https://img.shields.io/badge/Hosted_on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 [![Built with Gemini](https://img.shields.io/badge/Built%20with-Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white)](https://gemini.google.com)
+[![Source](https://img.shields.io/badge/Source-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/deepakmylist/metro-player)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 **Metro Player** is a sleek, responsive, and feature-rich web media player. Built with modern web technologies and hosted reliably on Render, it provides a seamless playback experience with intuitive controls, playlist management, and a clean user interface.
